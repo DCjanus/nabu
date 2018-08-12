@@ -1,6 +1,7 @@
 extern crate actix_web;
 extern crate atom_syndication;
 extern crate chrono;
+extern crate env_logger;
 extern crate failure;
 extern crate reqwest;
 extern crate serde;
@@ -20,6 +21,9 @@ pub mod source;
 pub mod utils;
 
 fn main() {
+    std::env::set_var("RUST_LOG", "actix_web=info");
+    env_logger::init();
+
     server::new(|| AtomHub::new().register(GitHubSource).apps)
         .bind("0.0.0.0:8000") // TODO read config from env
         .unwrap()

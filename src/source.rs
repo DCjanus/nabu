@@ -1,4 +1,4 @@
-use actix_web::{App, HttpRequest, HttpResponse};
+use actix_web::{middleware::Logger, App, HttpRequest, HttpResponse};
 use feed_generator::FeedGenerator;
 use std::collections::BTreeMap;
 
@@ -27,7 +27,7 @@ impl Source {
     }
 
     pub fn into_app(self) -> App {
-        let mut result = App::new().prefix(self.prefix);
+        let mut result = App::new().prefix(self.prefix).middleware(Logger::default());
         for (path, handler) in self.entries {
             result = result.resource(path, move |resource| resource.f(handler));
         }

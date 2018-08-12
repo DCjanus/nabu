@@ -9,6 +9,7 @@ actix-web = "0.7.2"
 chrono = "0.4.5"
 reqwest = "0.8.6"
 failure = "0.1.1"
+env_logger = "0.5.12"
 
 serde = "1.0.70"
 serde_derive = "1.0.70"

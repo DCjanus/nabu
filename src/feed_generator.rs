@@ -19,8 +19,9 @@ pub trait FeedGenerator {
 
         let info = parse_result.unwrap();
         let update_result = Self::update(info);
-        if let Err(_error) = update_result {
+        if let Err(error) = update_result {
             // TODO add log
+            println!("{:?}", error);
             return HttpResponse::InternalServerError()
                 .content_encoding(ContentEncoding::Gzip)
                 .content_type(TEXT_PLAIN_UTF_8)
@@ -29,15 +30,15 @@ pub trait FeedGenerator {
 
         let mut feed = update_result.unwrap();
 
-        let mut generator = Generator::default();
-        generator.set_uri(Some("https://github.com/DCjanus/nabu".to_string()));
-        generator.set_value("Nabu".to_string());
+        let generator = Generator {
+            value: "Nabu".to_string(),
+            uri: Some("https://github.com/DCjanus/nabu".to_string()),
+            version: None,
+        };
         feed.set_generator(Some(generator));
 
         // Because of copyright, remove content
-        let mut entries = feed.entries().to_owned();
-        entries.iter_mut().for_each(|x| x.set_content(None));
-        feed.set_entries(entries);
+        feed.entries.iter_mut().for_each(|x| x.set_content(None));
 
         HttpResponse::Ok()
             .content_encoding(ContentEncoding::Gzip)
