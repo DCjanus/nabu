@@ -1,4 +1,4 @@
-use routes::github::user_repos::UserRepoEntry;
+use routes::github::user_repos::UserRepoGenerator;
 use source::{IntoSource, Source};
 
 pub mod user_repos;
@@ -9,6 +9,6 @@ pub struct GitHubSource;
 
 impl IntoSource for GitHubSource {
     fn into_source(self) -> Source {
-        Source::new("github").register::<UserRepoEntry>()
+        Source::new("github").register::<UserRepoGenerator>()
     }
 }

@@ -24,7 +24,7 @@ impl Default for UserRepoInfo {
     }
 }
 
-pub struct UserRepoEntry;
+pub struct UserRepoGenerator;
 
 #[derive(Debug, Deserialize)]
 pub struct Repo {
@@ -41,7 +41,7 @@ pub struct RepoOwner {
     login: String,
 }
 
-impl FeedGenerator for UserRepoEntry {
+impl FeedGenerator for UserRepoGenerator {
     type Info = UserRepoInfo;
 
     fn path() -> &'static str {
@@ -87,7 +87,7 @@ impl FeedGenerator for UserRepoEntry {
     }
 }
 
-impl UserRepoEntry {
+impl UserRepoGenerator {
     fn build_entries(repos: &[Repo]) -> Vec<Entry> {
         repos
             .iter()
