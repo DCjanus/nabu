@@ -3,7 +3,7 @@ use feed_generator::FeedGenerator;
 use routes::github::GITHUB_API_PREFIX;
 use utils::{now, NabuResult};
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 #[serde(default)]
 pub struct UserRepoInfo {
     username: String,
@@ -49,7 +49,7 @@ impl FeedGenerator for UserRepoGenerator {
         "/user/repos"
     }
 
-    fn update(info: <Self as FeedGenerator>::Info) -> NabuResult<Feed> {
+    fn update(info: &Self::Info) -> NabuResult<Feed> {
         let url = format!(
             "{prefix}/users/{username}/repos",
             prefix = GITHUB_API_PREFIX,

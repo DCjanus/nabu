@@ -10,10 +10,15 @@ chrono = "0.4.5"
 reqwest = "0.8.6"
 failure = "0.1.1"
 env_logger = "0.5.12"
+lazy_static = "1.1.0"
 
 serde = "1.0.70"
 serde_derive = "1.0.70"
 serde_qs = "0.4.1"
 serde_json = "1.0.24"
+
+postgres = { version = "0.15.2", features = ["with-serde_json", "with-chrono"] }
+r2d2 = "0.8.2"
+r2d2_postgres = "0.14.0"
 
 atom_syndication = { git = "https://github.com/DCjanus/atom.git" }

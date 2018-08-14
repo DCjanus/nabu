@@ -1,0 +1,20 @@
+// TODO should be configurable
+use chrono::FixedOffset;
+use std::{env, time::Duration};
+
+pub fn pg_url() -> impl AsRef<str> {
+    let default_db_url = "postgresql://nabu@localhost:5432/nabu".to_string();
+    env::var("PG_URL").unwrap_or(default_db_url)
+}
+
+pub fn local_address() -> impl AsRef<str> {
+    "0.0.0.0:8000"
+}
+
+pub fn cache_duration() -> Duration {
+    Duration::from_secs(30 * 60)
+}
+
+pub fn offset() -> FixedOffset {
+    FixedOffset::east(8 * 3600)
+}
