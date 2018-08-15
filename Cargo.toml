@@ -11,6 +11,7 @@ reqwest = "0.8.6"
 failure = "0.1.1"
 env_logger = "0.5.12"
 lazy_static = "1.1.0"
+log = "0.4.3"
 
 serde = "1.0.70"
 serde_derive = "1.0.70"

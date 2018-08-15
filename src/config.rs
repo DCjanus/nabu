@@ -2,6 +2,13 @@
 use chrono::FixedOffset;
 use std::{env, time::Duration};
 
+#[derive(Eq, PartialEq, Debug)]
+pub enum ServeMode {
+    Prod,
+    Dev,
+    Test,
+}
+
 pub fn pg_url() -> impl AsRef<str> {
     let default_db_url = "postgresql://nabu@localhost:5432/nabu".to_string();
     env::var("PG_URL").unwrap_or(default_db_url)
@@ -17,4 +24,18 @@ pub fn cache_duration() -> Duration {
 
 pub fn offset() -> FixedOffset {
     FixedOffset::east(8 * 3600)
+}
+
+pub fn serve_mode() -> ServeMode {
+    let server_env = env::var("SERVER_ENV")
+        .unwrap_or_else(|_| "PROD".to_string())
+        .to_uppercase();
+
+    if server_env == "TEST" {
+        ServeMode::Test
+    } else if server_env == "DEV" {
+        ServeMode::Dev
+    } else {
+        ServeMode::Prod
+    }
 }

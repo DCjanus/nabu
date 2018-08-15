@@ -1,6 +1,6 @@
 use actix_web::{http::ContentEncoding, HttpRequest, HttpResponse};
 use atom_syndication::{Feed, FixedDateTime, Generator};
-use config::cache_duration;
+use config::{cache_duration, serve_mode, ServeMode};
 use database::get_connection;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::to_value;
@@ -18,7 +18,7 @@ pub trait FeedGenerator {
         } else {
             let parse_result = ::serde_qs::from_str::<Self::Info>(query_string);
             if let Err(error) = parse_result {
-                println!("{:?}", error);
+                error!("{:?}", error);
                 return HttpResponse::BadRequest()
                     .content_encoding(ContentEncoding::Gzip)
                     .content_type(TEXT_PLAIN_UTF_8)
@@ -27,28 +27,28 @@ pub trait FeedGenerator {
             parse_result.unwrap()
         };
 
-        // below: login for cache
-        let get_cache_result = Self::get_cache(request.path(), &info);
-        if let Ok(cache_result) = get_cache_result {
-            if let Some(cache) = cache_result {
-                return HttpResponse::Ok()
+        if serve_mode() != ServeMode::Dev {
+            // Logic for cache
+            let get_cache_result = Self::get_cache(request.path(), &info);
+            if let Ok(cache_result) = get_cache_result {
+                if let Some(cache) = cache_result {
+                    return HttpResponse::Ok()
+                        .content_encoding(ContentEncoding::Gzip)
+                        .content_type(ATOM_MIME)
+                        .body(cache);
+                }
+            } else if let Err(error) = get_cache_result {
+                error!("{:?}", error);
+                return HttpResponse::InternalServerError()
                     .content_encoding(ContentEncoding::Gzip)
-                    .content_type(ATOM_MIME)
-                    .body(cache);
+                    .content_type(TEXT_PLAIN_UTF_8)
+                    .body("Query cache failed");
             }
-        } else if let Err(error) = get_cache_result {
-            println!("{:?}", error);
-            return HttpResponse::InternalServerError()
-                .content_encoding(ContentEncoding::Gzip)
-                .content_type(TEXT_PLAIN_UTF_8)
-                .body("Query cache failed");
         }
-        // above: logic for cache
 
         let update_result = Self::update(&info);
         if let Err(error) = update_result {
-            // TODO add log
-            println!("{:?}", error);
+            error!("{:?}", error);
             return HttpResponse::InternalServerError()
                 .content_encoding(ContentEncoding::Gzip)
                 .content_type(TEXT_PLAIN_UTF_8)
@@ -69,9 +69,9 @@ pub trait FeedGenerator {
 
         let content = feed.to_string();
 
-        // below: login for cache
+        // below: logic for cache
         if let Err(error) = Self::set_cache(request.path(), &info, &content) {
-            println!("{:?}", error);
+            error!("{:?}", error);
             return HttpResponse::InternalServerError()
                 .content_encoding(ContentEncoding::Gzip)
                 .content_type(TEXT_PLAIN_UTF_8)

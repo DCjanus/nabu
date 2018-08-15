@@ -5,6 +5,8 @@ extern crate env_logger;
 extern crate failure;
 #[macro_use]
 extern crate lazy_static;
+#[macro_use]
+extern crate log;
 extern crate postgres;
 extern crate r2d2;
 extern crate r2d2_postgres;
@@ -17,8 +19,7 @@ extern crate serde_qs;
 
 use actix_web::server;
 use atom_hub::AtomHub;
-use config::local_address;
-use routes::github::GitHubSource;
+use config::{local_address, serve_mode};
 
 pub mod atom_hub;
 pub mod config;
@@ -29,11 +30,17 @@ pub mod source;
 pub mod utils;
 
 fn main() {
-    std::env::set_var("RUST_LOG", "actix_web=info");
+    std::env::set_var("RUST_LOG", "actix_web=info,info");
     env_logger::init();
 
-    server::new(|| AtomHub::new().register(GitHubSource).apps)
-        .bind(local_address().as_ref())
-        .unwrap()
-        .run();
+    info!("Current serve mode is {:?}", serve_mode());
+
+    server::new(|| {
+        AtomHub::new()
+            .register(::routes::github::GitHubSource)
+            .register(::routes::v2ex::V2exSource)
+            .apps
+    }).bind(local_address().as_ref())
+    .unwrap()
+    .run();
 }
