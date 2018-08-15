@@ -5,6 +5,7 @@
 # TODO
 
 + [x] 基于URL path与Query的缓存机制
++ [ ] docker-compose.yml中加入PostGreSQL服务
 + [ ] 开发文档
 + [ ] 单元测试
 + [ ] 更合理的缓存与调度机制
