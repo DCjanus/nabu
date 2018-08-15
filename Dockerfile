@@ -5,11 +5,8 @@ COPY ./docker/cargo_config $HOME/.cargo/config
 COPY ./docker/debian_stretch_mirror.list /etc/apt/sources.list
 
 # Update Cargo index
-RUN cargo search 1> /dev/null
 RUN apt-get update &&\
-    apt-get install -y --no-install-recommends \
-    libssl-dev \
-    pkg-config
+    apt-get install -y --no-install-recommends libssl-dev pkg-config
 COPY . .
 RUN cargo build --release
 
