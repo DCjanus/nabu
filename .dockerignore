@@ -1,6 +1,7 @@
 # Rust or Cargo
 /target
 **/*.rs.bk
+rustfmt.toml
 
 # IDE or Editor
 .idea/
@@ -13,3 +14,10 @@ docker-compose.yml
 
 # Git
 .git/
+.gitignore
+
+# Other
+README.MD
+LICENSE
+pre-commit
+.travis.yml
