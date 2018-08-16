@@ -2,16 +2,10 @@
 
 模仿[RSSHub](https://github.com/DIYgod/RSSHub)，使用Rust语言实现。
 
-# TODO
-
-+ [x] 基于URL path与Query的缓存机制
-+ [x] docker-compose.yml中加入PostGreSQL服务
-+ [ ] 在Web所在的容器启动脚本中添加等待数据库可用的脚本
-+ [ ] 更新请求异步串行化，避免缓存击穿
-+ [ ] 开发文档
-+ [ ] 单元测试
-+ [ ] 更合理的缓存与调度机制
-
 # 名称来源
 
 `Nabu`，古巴比伦神话中的智慧与写作之神。
+
+# TODO list
+
+<https://github.com/DCjanus/nabu/issues/3>
