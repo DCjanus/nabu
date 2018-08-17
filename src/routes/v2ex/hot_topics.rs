@@ -87,7 +87,6 @@ impl HotTopicsGenerator {
                     ..Default::default()
                 }],
                 published: Some(x.created),
-                summary: Some(x.content.clone()),
                 ..Default::default()
             }).collect()
     }
