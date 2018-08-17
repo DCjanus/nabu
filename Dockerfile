@@ -1,24 +1,18 @@
-FROM rust:1.28-slim as builder
-WORKDIR /usr/src/nabu
-VOLUME ["./target", "~/.cargo"]
-COPY ./docker/cargo_config $HOME/.cargo/config
-COPY ./docker/debian_stretch_mirror.list /etc/apt/sources.list
+FROM clux/muslrust:stable as builder
 
-# Update Cargo index
-RUN apt-get update &&\
-    apt-get install -y --no-install-recommends libssl-dev pkg-config
+WORKDIR /usr/src/nabu
+COPY ./docker/cargo_config $HOME/.cargo/config
 COPY . .
+
 RUN cargo build --release
 
 #####################################
 
-FROM debian:stretch-slim as prod
+FROM alpine:latest as prod
 WORKDIR /nabu/
-COPY ./docker/debian_stretch_mirror.list /etc/apt/sources.list
+RUN apk add --no-cache ca-certificates postgresql-client
 
-RUN apt-get update &&\
-    apt-get install -y --no-install-recommends \
-    libssl-dev pkg-config ca-certificates &&\
-    apt-get clean
-COPY --from=0 /usr/src/nabu/target/release/nabu .
-CMD ["./nabu"]
+COPY --from=0 /usr/src/nabu/target/x86_64-unknown-linux-musl/release/nabu .
+COPY ./docker/run_web.sh .
+RUN chmod +x run_web.sh
+CMD ["./run_web.sh"]
