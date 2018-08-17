@@ -17,5 +17,5 @@ fn init() -> NabuResult<Pool<PostgresConnectionManager>> {
 }
 
 pub fn get_connection() -> NabuResult<PooledConnection<PostgresConnectionManager>> {
-    DB_POOL.get().map_err(|x| x.into())
+    Ok(DB_POOL.get()?)
 }
