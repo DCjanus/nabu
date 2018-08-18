@@ -15,7 +15,8 @@ pub fn pg_url() -> impl AsRef<str> {
 }
 
 pub fn local_address() -> impl AsRef<str> {
-    "0.0.0.0:8000"
+    let default_address = "0.0.0.0:80".to_string();
+    env::var("LOCAL_ADDR").unwrap_or(default_address)
 }
 
 pub fn cache_duration() -> Duration {

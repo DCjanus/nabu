@@ -9,7 +9,9 @@ RUN cargo build --release
 #####################################
 
 FROM alpine:latest as prod
+EXPOSE 80
 WORKDIR /nabu/
+
 RUN apk add --no-cache ca-certificates postgresql-client
 
 COPY --from=0 /usr/src/nabu/target/x86_64-unknown-linux-musl/release/nabu .

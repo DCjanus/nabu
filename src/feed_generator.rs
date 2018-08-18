@@ -6,6 +6,8 @@ use serde::{de::DeserializeOwned, Serialize};
 use serde_json::to_value;
 use utils::{now, NabuResult, ATOM_MIME, TEXT_PLAIN_UTF_8};
 
+const CONTENT_ENCODING: ContentEncoding = ContentEncoding::Gzip;
+
 pub trait FeedGenerator {
     type Info: DeserializeOwned + Serialize + PartialEq + Default;
     fn path() -> &'static str;
@@ -20,7 +22,7 @@ pub trait FeedGenerator {
             if let Err(error) = parse_result {
                 error!("{:?}", error);
                 return HttpResponse::BadRequest()
-                    .content_encoding(ContentEncoding::Gzip)
+                    .content_encoding(CONTENT_ENCODING)
                     .content_type(TEXT_PLAIN_UTF_8)
                     .body("Wrong parameters in query string");
             }
@@ -33,14 +35,14 @@ pub trait FeedGenerator {
             if let Ok(cache_result) = get_cache_result {
                 if let Some(cache) = cache_result {
                     return HttpResponse::Ok()
-                        .content_encoding(ContentEncoding::Gzip)
+                        .content_encoding(CONTENT_ENCODING)
                         .content_type(ATOM_MIME)
                         .body(cache);
                 }
             } else if let Err(error) = get_cache_result {
                 error!("{:?}", error);
                 return HttpResponse::InternalServerError()
-                    .content_encoding(ContentEncoding::Gzip)
+                    .content_encoding(CONTENT_ENCODING)
                     .content_type(TEXT_PLAIN_UTF_8)
                     .body("Query cache failed");
             }
@@ -50,7 +52,7 @@ pub trait FeedGenerator {
         if let Err(error) = update_result {
             error!("{:?}", error);
             return HttpResponse::InternalServerError()
-                .content_encoding(ContentEncoding::Gzip)
+                .content_encoding(CONTENT_ENCODING)
                 .content_type(TEXT_PLAIN_UTF_8)
                 .body("Update feed failed");
         }
@@ -73,14 +75,14 @@ pub trait FeedGenerator {
         if let Err(error) = Self::set_cache(request.path(), &info, &content) {
             error!("{:?}", error);
             return HttpResponse::InternalServerError()
-                .content_encoding(ContentEncoding::Gzip)
+                .content_encoding(CONTENT_ENCODING)
                 .content_type(TEXT_PLAIN_UTF_8)
                 .body("Set cache failed");
         }
         // above: logic for cache
 
         HttpResponse::Created()
-            .content_encoding(ContentEncoding::Gzip)
+            .content_encoding(CONTENT_ENCODING)
             .content_type(ATOM_MIME)
             .body(&content)
     }
