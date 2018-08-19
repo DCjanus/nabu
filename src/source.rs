@@ -19,7 +19,7 @@ impl Source {
         }
     }
 
-    pub fn register<T: FeedGenerator>(mut self) -> Self {
+    pub fn register<T: FeedGenerator>(mut self, _: T) -> Self {
         let path = T::PATH;
         let handler = T::actix_web_handler;
         self.entries.insert(path, handler);

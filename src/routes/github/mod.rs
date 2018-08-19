@@ -9,6 +9,6 @@ pub struct GitHubSource;
 
 impl IntoSource for GitHubSource {
     fn into_source(self) -> Source {
-        Source::new("github").register::<UserRepoGenerator>()
+        Source::new("github").register(UserRepoGenerator)
     }
 }

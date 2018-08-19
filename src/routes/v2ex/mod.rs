@@ -7,6 +7,6 @@ pub struct V2exSource;
 
 impl IntoSource for V2exSource {
     fn into_source(self) -> Source {
-        Source::new("v2ex").register::<HotTopicsGenerator>()
+        Source::new("v2ex").register(HotTopicsGenerator)
     }
 }
