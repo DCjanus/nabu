@@ -22,6 +22,17 @@ impl Source {
     pub fn register<T: FeedGenerator>(mut self, _: T) -> Self {
         let path = T::PATH;
         let handler = T::actix_web_handler;
+
+        if self.entries.contains_key(path) {
+            let error_message = format!(
+                "duplicate path for {prefix}: {path}",
+                prefix = self.prefix,
+                path = path
+            );
+            error!("{}", error_message);
+            panic!(error_message);
+        }
+
         self.entries.insert(path, handler);
         self
     }

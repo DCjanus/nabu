@@ -3,7 +3,7 @@ use feed_generator::FeedGenerator;
 use routes::github::GITHUB_API_PREFIX;
 use utils::{now, NabuResult};
 
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(default)]
 pub struct UserRepoInfo {
     username: String,

@@ -10,7 +10,7 @@ use utils::{now, NabuResult, ATOM_MIME, TEXT_PLAIN_UTF_8};
 const CONTENT_ENCODING: ContentEncoding = ContentEncoding::Identity;
 
 pub trait FeedGenerator {
-    type Info: DeserializeOwned + Serialize + PartialEq + Default;
+    type Info: DeserializeOwned + Serialize + Default;
     const PATH: &'static str;
     fn update(info: &Self::Info) -> NabuResult<Feed>;
 

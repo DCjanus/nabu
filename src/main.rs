@@ -35,12 +35,8 @@ fn main() {
 
     info!("Current serve mode is {:?}", serve_mode());
 
-    server::new(|| {
-        AtomHub::new()
-            .register(::routes::github::GitHubSource)
-            .register(::routes::v2ex::V2exSource)
-            .apps
-    }).bind(local_address().as_ref())
-    .unwrap()
-    .run();
+    server::new(|| AtomHub::init().into_apps())
+        .bind(local_address().as_ref())
+        .unwrap()
+        .run();
 }

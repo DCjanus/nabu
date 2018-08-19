@@ -6,6 +6,9 @@
 
 `Nabu`，古巴比伦神话中的智慧与写作之神。
 
-# TODO list
+# 其他
 
-<https://github.com/DCjanus/nabu/issues/3>
++ *TODO* [项目贡献指引](./docs/guides/contribute.md)
++ [RSS订阅源开发指引](./docs/guides/develop_feed_generator.md)
++ *TODO* [已支持的RSS订阅源](./docs/supported_feeds.md)
++ [TODO List](https://github.com/DCjanus/nabu/issues/3)
