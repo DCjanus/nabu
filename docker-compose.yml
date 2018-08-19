@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    build: .
+    image: "s7janus/nabu:latest"
     ports:
     - "8000:8000"
     environment:
