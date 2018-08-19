@@ -3,7 +3,7 @@ services:
   web:
     image: "s7janus/nabu:latest"
     ports:
-    - "8000:8000"
+    - "8000:80"
     environment:
       PG_URL: "postgresql://nabu@db:5432/nabu"
     depends_on:

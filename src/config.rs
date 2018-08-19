@@ -15,7 +15,7 @@ pub fn pg_url() -> impl AsRef<str> {
 }
 
 pub fn local_address() -> impl AsRef<str> {
-    let default_address = "0.0.0.0:80".to_string();
+    let default_address = "0.0.0.0:8000".to_string();
     env::var("LOCAL_ADDR").unwrap_or(default_address)
 }
 

@@ -15,6 +15,7 @@ RUN cargo build --release
 FROM alpine:latest as prod
 EXPOSE 80
 WORKDIR /nabu/
+ENV LOCAL_ADDR="0.0.0.0:80"
 
 RUN apk add --no-cache ca-certificates postgresql-client
 
