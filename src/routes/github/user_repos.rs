@@ -44,10 +44,7 @@ pub struct RepoOwner {
 impl FeedGenerator for UserRepoGenerator {
     type Info = UserRepoInfo;
 
-    fn path() -> &'static str {
-        // Ugly URL
-        "/user/repos"
-    }
+    const PATH: &'static str = "/user/repos";
 
     fn update(info: &Self::Info) -> NabuResult<Feed> {
         let url = format!(

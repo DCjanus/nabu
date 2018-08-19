@@ -39,9 +39,7 @@ struct Member {
 impl FeedGenerator for HotTopicsGenerator {
     type Info = ();
 
-    fn path() -> &'static str {
-        "topics/hot"
-    }
+    const PATH: &'static str = "topics/hot";
 
     fn update(_: &Self::Info) -> NabuResult<Feed> {
         let url = "https://www.v2ex.com/api/topics/hot.json";

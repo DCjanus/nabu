@@ -10,7 +10,7 @@ const CONTENT_ENCODING: ContentEncoding = ContentEncoding::Gzip;
 
 pub trait FeedGenerator {
     type Info: DeserializeOwned + Serialize + PartialEq + Default;
-    fn path() -> &'static str;
+    const PATH: &'static str;
     fn update(info: &Self::Info) -> NabuResult<Feed>;
 
     fn actix_web_handler(request: &HttpRequest) -> HttpResponse {
