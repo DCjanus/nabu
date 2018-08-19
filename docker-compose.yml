@@ -2,8 +2,6 @@ version: '3'
 services:
   web:
     image: "s7janus/nabu:latest"
-    ports:
-    - "8000:80"
     environment:
       PG_URL: "postgresql://nabu@db:5432/nabu"
     depends_on:
@@ -13,3 +11,20 @@ services:
     image: "postgres:10-alpine"
     environment:
       POSTGRES_USER: "nabu"
+    volumes:
+    - "db:/var/lib/postgresql/data"
+
+  caddy:
+    image: abiosoft/caddy:no-stats
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./docker/Caddyfile:/etc/Caddyfile"
+      - "caddy:/root/.caddy"
+    depends_on:
+      - web
+
+volumes:
+  db:
+  caddy:

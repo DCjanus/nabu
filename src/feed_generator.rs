@@ -6,7 +6,8 @@ use serde::{de::DeserializeOwned, Serialize};
 use serde_json::to_value;
 use utils::{now, NabuResult, ATOM_MIME, TEXT_PLAIN_UTF_8};
 
-const CONTENT_ENCODING: ContentEncoding = ContentEncoding::Gzip;
+// Compression is no longer needed after using Caddy
+const CONTENT_ENCODING: ContentEncoding = ContentEncoding::Identity;
 
 pub trait FeedGenerator {
     type Info: DeserializeOwned + Serialize + PartialEq + Default;

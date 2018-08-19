@@ -1,0 +1,4 @@
+rss.dcjanus.com {
+    proxy / web:80
+    gzip
+}
