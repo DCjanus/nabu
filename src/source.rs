@@ -1,9 +1,10 @@
+use actix_handler::ActixHandler;
 use actix_web::{middleware::Logger, App, HttpRequest, HttpResponse};
 use feed_generator::FeedGenerator;
 use std::collections::BTreeMap;
 
-pub trait IntoSource {
-    fn into_source(self) -> Source;
+pub trait SourceBuilder {
+    fn build_source() -> Source;
 }
 
 pub struct Source {
@@ -43,11 +44,5 @@ impl Source {
             result = result.resource(path, move |resource| resource.f(handler));
         }
         result
-    }
-}
-
-impl IntoSource for Source {
-    fn into_source(self) -> Source {
-        self
     }
 }

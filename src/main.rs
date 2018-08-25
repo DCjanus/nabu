@@ -21,6 +21,7 @@ use actix_web::server;
 use atom_hub::AtomHub;
 use config::{local_address, serve_mode};
 
+pub mod actix_handler;
 pub mod atom_hub;
 pub mod config;
 pub mod database;
