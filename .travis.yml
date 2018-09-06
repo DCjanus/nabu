@@ -11,8 +11,12 @@ matrix:
   allow_failures:
   - rust: nightly
   fast_finish: true
-cache: cargo
+cache:
+  directories:
+  - /home/travis/.cargo
+
 before_script:
+- rm -rf /home/travis/.cargo/registry
 - rustup update nightly
 - rustup component add rustfmt-preview clippy-preview --toolchain nightly
 script:
