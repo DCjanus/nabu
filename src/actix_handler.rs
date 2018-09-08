@@ -1,18 +1,14 @@
 use actix_web::{http::ContentEncoding, HttpRequest, HttpResponse};
-use atom_syndication::{FixedDateTime, Generator};
-use config::{cache_duration, serve_mode, ServeMode};
-use database::get_connection;
+use atom_syndication::Generator;
+use config::{serve_mode, ServeMode};
 use feed_generator::FeedGenerator;
-use serde_json::to_value;
-use utils::{now, NabuResult, ATOM_MIME, TEXT_PLAIN_UTF_8};
+use utils::{ATOM_MIME, TEXT_PLAIN_UTF_8};
 
 // Compression is no longer needed after using Caddy
 const CONTENT_ENCODING: ContentEncoding = ContentEncoding::Identity;
 
 pub trait ActixHandler: FeedGenerator {
     fn actix_web_handler(request: &HttpRequest) -> HttpResponse;
-    fn get_cache(path: &str, info: &Self::Info) -> NabuResult<Option<String>>;
-    fn set_cache(path: &str, info: &Self::Info, content: &str) -> NabuResult<()>;
 }
 
 impl<T> ActixHandler for T
@@ -91,36 +87,5 @@ where
             .content_encoding(CONTENT_ENCODING)
             .content_type(ATOM_MIME)
             .body(&content)
-    }
-
-    fn get_cache(path: &str, info: &Self::Info) -> NabuResult<Option<String>> {
-        let query_result = get_connection()?
-            .query(r"SELECT updated_time, content FROM fetch_cache WHERE path=$1 AND info@> $2 AND info<@ $2 limit 1", &[
-                &path, &to_value(info)?
-            ])?;
-        if query_result.is_empty() {
-            return Ok(None);
-        }
-        let row = query_result.get(0);
-
-        let updated_time: FixedDateTime = row.get(0);
-        let content: String = row.get(1);
-
-        if now().signed_duration_since(updated_time).to_std()? > cache_duration() {
-            Ok(None)
-        } else {
-            Ok(Some(content))
-        }
-    }
-
-    fn set_cache(path: &str, info: &Self::Info, content: &str) -> NabuResult<()> {
-        get_connection()?.execute(
-            r#"INSERT INTO fetch_cache(path, info, content)
-                            VALUES ($1, $2, $3)
-                            ON CONFLICT ON CONSTRAINT logic_unique_key DO UPDATE
-                                SET content=$3"#,
-            &[&path, &to_value(info)?, &content],
-        )?;
-        Ok(())
     }
 }
