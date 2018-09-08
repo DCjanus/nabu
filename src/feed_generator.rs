@@ -1,10 +1,9 @@
-use atom_syndication::{Feed, FixedDateTime};
-use config::cache_duration;
-use database::get_connection;
+use atom_syndication::Feed;
+use errors::QSParseError;
 use serde::{de::DeserializeOwned, Serialize};
-use serde_json::to_value;
+use serde_json::Value;
 use std::hash::Hash;
-use utils::{now, NabuResult};
+use utils::NabuResult;
 
 pub trait FeedGenerator {
     type Info: DeserializeOwned + Serialize + Default + Hash;
@@ -13,34 +12,17 @@ pub trait FeedGenerator {
 
     fn update(info: &Self::Info) -> NabuResult<Feed>;
 
-    fn get_cache(path: &str, info: &Self::Info) -> NabuResult<Option<String>> {
-        let query_result = get_connection()?
-            .query(r"SELECT updated_time, content FROM fetch_cache WHERE path=$1 AND info@> $2 AND info<@ $2 limit 1", &[
-                &path, &to_value(info)?
-            ])?;
-        if query_result.is_empty() {
-            return Ok(None);
-        }
-        let row = query_result.get(0);
-
-        let updated_time: FixedDateTime = row.get(0);
-        let content: String = row.get(1);
-
-        if now().signed_duration_since(updated_time).to_std()? > cache_duration() {
-            Ok(None)
+    fn clean_query_string(query_string: &str) -> NabuResult<Value> {
+        let info = if query_string.is_empty() {
+            Self::Info::default()
         } else {
-            Ok(Some(content))
-        }
+            ::serde_qs::from_str::<Self::Info>(query_string).map_err(|_| QSParseError)?
+        };
+        Ok(::serde_json::to_value(info)?)
     }
 
-    fn set_cache(path: &str, info: &Self::Info, content: &str) -> NabuResult<()> {
-        get_connection()?.execute(
-            r#"INSERT INTO fetch_cache(path, info, content)
-                            VALUES ($1, $2, $3)
-                            ON CONFLICT ON CONSTRAINT logic_unique_key DO UPDATE
-                                SET content=$3"#,
-            &[&path, &to_value(info)?, &content],
-        )?;
-        Ok(())
+    fn update_by_value(value: Value) -> NabuResult<Feed> {
+        let info = ::serde_json::from_value::<Self::Info>(value)?;
+        Self::update(&info)
     }
 }

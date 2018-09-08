@@ -8,15 +8,6 @@ pub struct AtomHub {
 }
 
 impl AtomHub {
-    // Register your sources
-    pub fn init() -> Self {
-        AtomHub::default()
-            .register(::routes::github::GitHubSource)
-            .register(::routes::v2ex::V2exSource)
-    }
-}
-
-impl AtomHub {
     pub fn register<T: SourceBuilder>(mut self, _: T) -> Self {
         let source = T::build_source();
 

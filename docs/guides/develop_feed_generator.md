@@ -141,17 +141,13 @@ impl IntoSource for GitHubSource {
 
 ### 注册Source
 
-在`{PROJECT_ROOT}/src/atom_hub.rs`中，定义了名为`AtomHub`的结构体，其名为`init`的方法实现如下:
+在`{PROJECT_ROOT}/src/routes/mod.rs`中，定义了名为`atom_hub`的函数，其实现如下:
 
 ```rust
-impl AtomHub {
-    // Register your sources
-    pub fn init() -> Self {
-        AtomHub::new()
-            .register(::routes::github::GitHubSource)
-            .register(::routes::v2ex::V2exSource)
-            .register(::route::unimplement::UnimplementedSource)
-    }
+pub fn atom_hub() -> AtomHub {
+    AtomHub::default()
+        .register(::routes::github::GitHubSource)
+        .register(::routes::v2ex::V2exSource)
 }
 ```
 
