@@ -4,19 +4,19 @@ version = "0.1.0"
 authors = ["DCjanus <DCjanus@dcjanus.com>"]
 
 [dependencies]
-actix-web = "0.7.4"
+actix-web = "0.7.6"
 
 chrono = "0.4.6"
 reqwest = "0.8.8"
 failure = "0.1.2"
 env_logger = "0.5.13"
 lazy_static = "1.1.0"
-log = "0.4.4"
+log = "0.4.5"
 
-serde = "1.0.76"
-serde_derive = "1.0.76"
+serde = "1.0.77"
+serde_derive = "1.0.77"
 serde_qs = "0.4.1"
-serde_json = "1.0.26"
+serde_json = "1.0.27"
 
 postgres = { version = "0.15.2", features = ["with-serde_json", "with-chrono"] }
 r2d2 = "0.8.2"
