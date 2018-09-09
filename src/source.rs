@@ -20,7 +20,7 @@ impl Source {
         }
     }
 
-    pub fn register<T: FeedGenerator>(mut self, _: T) -> Self {
+    pub fn register<T: FeedGenerator>(mut self, feed_generator: T) -> Self {
         let path = T::PATH;
 
         if self.entries.contains_key(path) {
@@ -33,12 +33,7 @@ impl Source {
             panic!(error_message);
         }
 
-        let worker = FeedWorker {
-            path,
-            prefix: self.prefix,
-            clean_query_string: T::clean_query_string,
-            update_by_value: T::update_by_value,
-        };
+        let worker = FeedWorker::new(&self, feed_generator);
 
         self.entries.insert(path, worker);
         self
@@ -47,7 +42,7 @@ impl Source {
     pub fn into_app(self) -> App {
         let mut result = App::new().prefix(self.prefix).middleware(Logger::default());
         for i in self.entries.values() {
-            let path = i.path;
+            let path = &i.path;
             let handler = i.clone().into_actix_web_handler();
             result = result.resource(path, move |resource| resource.f(handler));
         }

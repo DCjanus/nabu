@@ -120,7 +120,7 @@ update中包含`FeedGenerator`的主要实现逻辑。
 
 ```rust
 impl FeedGenerator for UserRepoGenerator {
-    const PATH: &'static str = "/user/repos";
+    const PATH: &'static str = "user/repos";
 }
 ```
 

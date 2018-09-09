@@ -3,19 +3,41 @@ use atom_syndication::{Feed, FixedDateTime, Generator};
 use config::{cache_duration, serve_mode, ServeMode};
 use database::get_connection;
 use errors::QSParseError;
+use feed_generator::FeedGenerator;
 use responses;
 use serde_json::Value;
+use source::Source;
 use utils::{now, NabuResult};
 
 #[derive(Clone)]
 pub struct FeedWorker {
-    pub prefix: &'static str,
-    pub path: &'static str,
+    pub prefix: String,
+    pub path: String,
     pub clean_query_string: fn(&str) -> NabuResult<Value>,
     pub update_by_value: fn(Value) -> NabuResult<Feed>,
 }
 
 impl FeedWorker {
+    pub fn new<T: FeedGenerator>(source: &Source, _: T) -> Self {
+        let prefix = source
+            .prefix
+            .split('/')
+            .filter(|x| !x.is_empty())
+            .collect::<Vec<&str>>()
+            .join("/");
+        let path = T::PATH
+            .split('/')
+            .filter(|x| !x.is_empty())
+            .collect::<Vec<&str>>()
+            .join("/");
+        FeedWorker {
+            prefix,
+            path,
+            clean_query_string: T::clean_query_string,
+            update_by_value: T::update_by_value,
+        }
+    }
+
     pub fn get_cache(&self, info: &Value) -> NabuResult<Option<String>> {
         let query_result = get_connection()?
             .query(r"SELECT updated_time, content FROM fetch_cache WHERE prefix=$1 AND path=$2 AND info@> $3 AND info<@ $3 limit 1", &[
