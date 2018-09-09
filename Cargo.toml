@@ -23,4 +23,4 @@ postgres = { version = "0.15.2", features = ["with-serde_json", "with-chrono"] }
 r2d2 = "0.8.2"
 r2d2_postgres = "0.14.0"
 
-atom_syndication = { git = "https://github.com/DCjanus/atom.git" }
+atom_syndication = { git = "https://github.com/DCjanus/atom_for_nabu.git", features = ["serde"] }

@@ -4,7 +4,7 @@ create table if not exists fetch_cache (
   path         text                                               not null,
   info         jsonb                                              not null,
   updated_time timestamp with time zone default current_timestamp not null,
-  content      text                                               not null,
+  content      jsonb                                               not null,
   constraint logic_unique_key unique (prefix ,path, info)
 );
 

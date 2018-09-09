@@ -38,7 +38,7 @@ impl FeedWorker {
         }
     }
 
-    pub fn get_cache(&self, info: &Value) -> NabuResult<Option<String>> {
+    pub fn get_cache(&self, info: &Value) -> NabuResult<Option<Feed>> {
         let query_result = get_connection()?
             .query(r"SELECT updated_time, content FROM fetch_cache WHERE prefix=$1 AND path=$2 AND info@> $3 AND info<@ $3 limit 1", &[
                 &self.prefix, &self.path, info
@@ -49,16 +49,18 @@ impl FeedWorker {
         let row = query_result.get(0);
 
         let updated_time: FixedDateTime = row.get(0);
-        let content: String = row.get(1);
+        let content: Value = row.get(1);
+        let feed = ::serde_json::from_value::<Feed>(content)?;
 
         if now().signed_duration_since(updated_time).to_std()? > cache_duration() {
             Ok(None)
         } else {
-            Ok(Some(content))
+            Ok(Some(feed))
         }
     }
 
-    pub fn put_cache(&self, info: &Value, content: &str) -> NabuResult<()> {
+    pub fn put_cache(&self, info: &Value, feed: &Feed) -> NabuResult<()> {
+        let content = ::serde_json::to_value(feed)?;
         get_connection()?.execute(
             r#"INSERT INTO fetch_cache(prefix, path, info, content)
                             VALUES ($1, $2, $3, $4)
@@ -92,7 +94,7 @@ impl FeedWorker {
                 match self.get_cache(&value) {
                     Ok(cache_option) => {
                         if let Some(cache) = cache_option {
-                            return responses::cache_hit(cache);
+                            return responses::cache_hit(cache.to_string());
                         }
                     }
                     Err(unexpected_error) => {
@@ -112,13 +114,11 @@ impl FeedWorker {
                         version: None,
                     }));
 
-                    let content = feed.to_string();
-
-                    if let Err(put_cache_error) = self.put_cache(&value, &content) {
+                    if let Err(put_cache_error) = self.put_cache(&value, &feed) {
                         error!("{:?}", put_cache_error);
                     }
 
-                    responses::feed_created(content)
+                    responses::feed_created(feed.to_string())
                 }
                 Err(update_error) => {
                     error!("{:?}", update_error);
