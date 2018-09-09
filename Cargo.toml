@@ -10,7 +10,7 @@ chrono = "0.4"
 reqwest = "0.8"
 failure = "0.1"
 failure_derive = "0.1"
-env_logger = "0.5"
+flexi_logger = "0.9"
 lazy_static = "1.1"
 log = "0.4"
 
