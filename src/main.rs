@@ -38,6 +38,12 @@ fn main() {
     std::env::set_var("RUST_LOG", "actix_web=info,info");
     env_logger::init();
 
+    if let Err(init_database_error) = ::database::init() {
+        error!("{:?}", init_database_error)
+    } else {
+        info!("init database success")
+    }
+
     info!("Current serve mode is {:?}", serve_mode());
 
     server::new(|| atom_hub().into_apps())

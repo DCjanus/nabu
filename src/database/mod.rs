@@ -7,7 +7,7 @@ lazy_static! {
     static ref DB_POOL: Pool<PostgresConnectionManager> = init().unwrap();
 }
 
-fn init() -> NabuResult<Pool<PostgresConnectionManager>> {
+pub fn init() -> NabuResult<Pool<PostgresConnectionManager>> {
     let manager = PostgresConnectionManager::new(pg_url().as_ref(), TlsMode::None)?;
     let pool = Pool::new(manager)?;
 
