@@ -1,4 +1,4 @@
-rss.dcjanus.com {
+rss.example.com {
     proxy / web:80
     gzip
 }
