@@ -1,9 +1,7 @@
 # Nabu
 
 ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
-
 [![Build Status](https://travis-ci.org/DCjanus/nabu.svg?branch=master)](https://travis-ci.org/DCjanus/nabu)
-
 [![dependency status](https://deps.rs/repo/github/dcjanus/nabu/status.svg)](https://deps.rs/repo/github/dcjanus/nabu)
 
 模仿[RSSHub](https://github.com/DIYgod/RSSHub)，使用Rust语言实现。
