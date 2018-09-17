@@ -7,7 +7,7 @@ authors = ["DCjanus <DCjanus@dcjanus.com>"]
 actix-web = "0.7"
 
 chrono = "0.4"
-reqwest = "0.8"
+reqwest = { git = "https://github.com/seanmonstar/reqwest.git", rev = "68d012e9540675a649276ac4349d6c847211b558" }
 failure = "0.1"
 failure_derive = "0.1"
 flexi_logger = "0.9"
@@ -23,4 +23,4 @@ postgres = { version = "0.15", features = ["with-serde_json", "with-chrono"] }
 r2d2 = "0.8"
 r2d2_postgres = "0.14"
 
-atom_syndication = { git = "https://github.com/DCjanus/atom_for_nabu.git", features = ["serde"] }
+atom_syndication = { git = "https://github.com/DCjanus/atom_for_nabu.git", features = ["with-serde"] }
