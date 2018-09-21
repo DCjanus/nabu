@@ -30,9 +30,9 @@ impl FeedGenerator for CrateVersionsGenerator {
             .versions;
         let result = Feed {
             id: format!("https://crates.io/crates/{name}", name = info.name),
-            title: format!("Versions of Crate '{name}'", name = info.name),
+            title: format!("Latest 10 Versions of Crate '{name}'", name = info.name),
             updated: now(), // TODO 应该仅在数据更新时更新这个字段
-            entries: Self::build_entries(&versions)?,
+            entries: Self::build_entries(&versions[..10])?,
             ..Default::default()
         };
         Ok(result)

@@ -7,7 +7,7 @@ authors = ["DCjanus <DCjanus@dcjanus.com>"]
 actix-web = "0.7"
 
 chrono = "0.4"
-reqwest = { git = "https://github.com/seanmonstar/reqwest.git", rev = "68d012e9540675a649276ac4349d6c847211b558" }
+reqwest = "0.9"
 failure = "0.1"
 failure_derive = "0.1"
 flexi_logger = "0.9"

@@ -1,8 +1,7 @@
-use serde_json;
-
-use atom_syndication::{Category, Entry, Feed, FixedDateTime, Link, Person};
+use atom_syndication::{Category, Content, Entry, Feed, FixedDateTime, Link, Person};
 use feed_generator::FeedGenerator;
 use reqwest;
+use serde_json;
 use utils::{now, NabuResult};
 
 pub struct HotTopicsGenerator;
@@ -14,7 +13,7 @@ struct Topic {
     #[serde(deserialize_with = "::utils::secord_to_datetime")]
     last_modified: FixedDateTime,
     id: i128,
-    content: String,
+    content_rendered: String,
     title: String,
     #[serde(deserialize_with = "::utils::secord_to_datetime")]
     created: FixedDateTime,
@@ -68,6 +67,11 @@ impl HotTopicsGenerator {
             .iter()
             .map(|x| Entry {
                 title: x.title.clone(),
+                content: Some(Content {
+                    value: Some(x.content_rendered.clone()),
+                    src: Some(x.url.clone()),
+                    content_type: Some("html".to_string()),
+                }),
                 id: format!("{}", x.id),
                 updated: x.last_modified,
                 authors: vec![Person {
