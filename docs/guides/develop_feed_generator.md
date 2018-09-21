@@ -9,23 +9,29 @@
 
 ## 目录结构
 
-```text                      
+```text
 src
 ├── atom_hub.rs
 ├── config.rs
 ├── database
 │   ├── init.sql
 │   └── mod.rs
+├── errors.rs
 ├── feed_generator.rs               # Trait FeedGenerator定义
+├── feed_worker.rs
 ├── main.rs
+├── responses.rs
 ├── routes                          # 所有实现订阅源都在该文件夹下
-│   ├── github                      
+│   ├── crates_io
+│   │   ├── crate_versions.rs
+│   │   └── mod.rs
+│   ├── github
 │   │   ├── mod.rs                  # 示例：Github Source
 │   │   └── user_repos.rs           # 示例：某GitHub用户repository列表的RSS订阅
 │   ├── mod.rs
 │   └── v2ex
-│       ├── mod.rs                  # 示例：V2EX Source
-│       └── hot_topics.rs           # 示例：V2EX每日热帖的RSS订阅
+│       ├── hot_topics.rs           # 示例：V2EX每日热帖的RSS订阅
+│       └── mod.rs                  # 示例：V2EX Source
 ├── source.rs
 └── utils.rs
 ```
@@ -112,7 +118,7 @@ impl FeedGenerator for UserRepoGenerator {
 
 update中包含`FeedGenerator`的主要实现逻辑。
 
-需要注意的是，受限于版权因素，不应在生成的Feed中包含完整内容，即避免使用Content字段，并保证Description字段中不包含完整内容。
+需要注意的是，受限于版权因素，在Feed中仅应包含摘要信息，避免包含完整内容。
 
 #### FeedGenerator::PATH
 
@@ -126,11 +132,11 @@ impl FeedGenerator for UserRepoGenerator {
 
 ### 实现IntoSource
 
-以GitHub为例，每个网站对应的所有RSS源都应注册到同一`Source`上，在当前版本中，`Source`是一个预先提供的Struct，对于订阅源开发者，实际应创建一个名称以'Source'结尾的Struct，如`GitHubSource`，并为其实现名为`IntoSource`的Trait，如:
+以GitHub为例，每个网站对应的所有RSS源都应注册到同一`Source`上，在当前版本中，`Source`是一个预先提供的Struct，对于订阅源开发者，实际应创建一个名称以'Source'结尾的Struct，如`GitHubSource`，并为其实现名为`SourceBuilder`的Trait，如:
 
 ```rust
-impl IntoSource for GitHubSource {
-    fn into_source(self) -> Source {
+impl SourceBuilder for GitHubSource {
+    fn build_source(self) -> Source {
         Source::new("github")               // 该Source的prefix
         .register(UserRepoGenerator)        // 注册相关FeedGenerator 
         .register(UnimplementedGenerator1)
@@ -148,6 +154,7 @@ pub fn atom_hub() -> AtomHub {
     AtomHub::default()
         .register(::routes::github::GitHubSource)
         .register(::routes::v2ex::V2exSource)
+        .register(::routes::crates_io::CratesIoSource)
 }
 ```
 
