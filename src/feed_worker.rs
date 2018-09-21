@@ -106,8 +106,6 @@ impl FeedWorker {
 
             match (self.update_by_value)(value.clone()) {
                 Ok(mut feed) => {
-                    // Because of copyright, remove content
-                    feed.entries.iter_mut().for_each(|x| x.set_content(None));
                     feed.set_generator(Some(Generator {
                         value: "Nabu".to_string(),
                         uri: Some("https://github.com/DCjanus/nabu".to_string()),
