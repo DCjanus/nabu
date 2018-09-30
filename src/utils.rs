@@ -1,6 +1,6 @@
 use atom_syndication::FixedDateTime;
 use chrono::prelude::*;
-use config::offset;
+use crate::config::offset;
 use serde::{Deserialize, Deserializer};
 
 pub type FailureError = ::failure::Error;

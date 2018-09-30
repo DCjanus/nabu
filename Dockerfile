@@ -1,4 +1,5 @@
-FROM clux/muslrust:stable as builder
+# When 2018 edition is ready, replace nightly with stable
+FROM clux/muslrust:nightly-2018-09-29 as builder
 
 WORKDIR /nabu
 COPY . .

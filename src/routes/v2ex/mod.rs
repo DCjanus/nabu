@@ -1,5 +1,5 @@
 use self::hot_topics::HotTopicsGenerator;
-use source::{Source, SourceBuilder};
+use crate::source::{Source, SourceBuilder};
 
 pub mod hot_topics;
 

@@ -1,5 +1,7 @@
-use routes::crates_io::crate_versions::CrateVersionsGenerator;
-use source::{Source, SourceBuilder};
+use crate::{
+    routes::crates_io::crate_versions::CrateVersionsGenerator,
+    source::{Source, SourceBuilder},
+};
 
 pub mod crate_versions;
 

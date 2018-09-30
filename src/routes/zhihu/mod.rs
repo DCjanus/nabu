@@ -1,5 +1,7 @@
-use routes::zhihu::column::ColumnGenerator;
-use source::{Source, SourceBuilder};
+use crate::{
+    routes::zhihu::column::ColumnGenerator,
+    source::{Source, SourceBuilder},
+};
 
 pub mod column;
 

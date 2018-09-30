@@ -1,9 +1,8 @@
 use atom_syndication::Feed;
-use errors::QSParseError;
+use crate::{errors::QSParseError, utils::NabuResult};
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 use std::hash::Hash;
-use utils::NabuResult;
 
 pub trait FeedGenerator {
     type Info: DeserializeOwned + Serialize + Default + Hash;

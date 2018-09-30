@@ -1,7 +1,6 @@
 use atom_syndication::{Category, Content, Entry, Feed, FixedDateTime, Link, Person};
-use errors::WrongResponse;
-use feed_generator::FeedGenerator;
-use utils::NabuResult;
+use crate::{errors::WrongResponse, feed_generator::FeedGenerator, utils::NabuResult};
+use serde::{Deserialize, Serialize};
 
 /// 知乎专栏
 pub struct ColumnGenerator;
@@ -105,9 +104,9 @@ impl Default for ZhihuColumnInfo {
 pub struct Article {
     pub author: User,
     pub id: u64,
-    #[serde(deserialize_with = "::utils::secord_to_datetime")]
+    #[serde(deserialize_with = "crate::utils::secord_to_datetime")]
     pub created: FixedDateTime,
-    #[serde(deserialize_with = "::utils::secord_to_datetime")]
+    #[serde(deserialize_with = "crate::utils::secord_to_datetime")]
     pub updated: FixedDateTime,
     pub excerpt: String,
     pub title: String,
@@ -124,7 +123,7 @@ pub struct User {
 pub struct ZhihuColumn {
     pub title: String,
     pub url: String,
-    #[serde(deserialize_with = "::utils::secord_to_datetime")]
+    #[serde(deserialize_with = "crate::utils::secord_to_datetime")]
     pub updated: FixedDateTime,
 }
 

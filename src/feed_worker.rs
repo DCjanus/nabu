@@ -1,13 +1,16 @@
 use actix_web::{HttpRequest, HttpResponse};
 use atom_syndication::{Feed, FixedDateTime, Generator};
-use config::{cache_duration, serve_mode, ServeMode};
-use database::get_connection;
-use errors::QSParseError;
-use feed_generator::FeedGenerator;
-use responses;
+use crate::{
+    config::{cache_duration, serve_mode, ServeMode},
+    database::get_connection,
+    errors::QSParseError,
+    feed_generator::FeedGenerator,
+    responses,
+    source::Source,
+    utils::{now, NabuResult},
+};
+use log::error;
 use serde_json::Value;
-use source::Source;
-use utils::{now, NabuResult};
 
 #[derive(Clone)]
 pub struct FeedWorker {

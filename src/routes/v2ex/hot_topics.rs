@@ -1,8 +1,11 @@
 use atom_syndication::{Category, Content, Entry, Feed, FixedDateTime, Link, Person};
-use feed_generator::FeedGenerator;
+use crate::{
+    feed_generator::FeedGenerator,
+    utils::{now, NabuResult},
+};
 use reqwest;
+use serde::Deserialize;
 use serde_json;
-use utils::{now, NabuResult};
 
 pub struct HotTopicsGenerator;
 
@@ -10,12 +13,12 @@ pub struct HotTopicsGenerator;
 struct Topic {
     node: Node,
     member: Member,
-    #[serde(deserialize_with = "::utils::secord_to_datetime")]
+    #[serde(deserialize_with = "crate::utils::secord_to_datetime")]
     last_modified: FixedDateTime,
     id: i128,
     content_rendered: String,
     title: String,
-    #[serde(deserialize_with = "::utils::secord_to_datetime")]
+    #[serde(deserialize_with = "crate::utils::secord_to_datetime")]
     created: FixedDateTime,
     url: String,
 }

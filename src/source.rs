@@ -1,6 +1,6 @@
 use actix_web::{middleware::Logger, App};
-use feed_generator::FeedGenerator;
-use feed_worker::FeedWorker;
+use crate::{feed_generator::FeedGenerator, feed_worker::FeedWorker};
+use log::error;
 use std::collections::BTreeMap;
 
 pub trait SourceBuilder {

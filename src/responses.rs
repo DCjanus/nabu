@@ -1,5 +1,5 @@
 use actix_web::{http::ContentEncoding, HttpResponse};
-use utils::{ATOM_MIME, TEXT_PLAIN_UTF_8};
+use crate::utils::{ATOM_MIME, TEXT_PLAIN_UTF_8};
 
 const CONTENT_ENCODING: ContentEncoding = ContentEncoding::Identity;
 

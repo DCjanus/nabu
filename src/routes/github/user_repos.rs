@@ -1,7 +1,10 @@
 use atom_syndication::{Entry, Feed, Link, Person};
-use feed_generator::FeedGenerator;
-use routes::github::GITHUB_API_PREFIX;
-use utils::{now, NabuResult};
+use crate::{
+    feed_generator::FeedGenerator,
+    routes::github::GITHUB_API_PREFIX,
+    utils::{now, NabuResult},
+};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Hash)]
 #[serde(default)]

@@ -1,5 +1,7 @@
-use routes::github::user_repos::UserRepoGenerator;
-use source::{Source, SourceBuilder};
+use crate::{
+    routes::github::user_repos::UserRepoGenerator,
+    source::{Source, SourceBuilder},
+};
 
 pub mod user_repos;
 

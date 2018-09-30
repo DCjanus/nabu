@@ -1,7 +1,7 @@
-use config::pg_url;
+use crate::{config::pg_url, utils::NabuResult};
+use lazy_static::lazy_static;
 use r2d2::{Pool, PooledConnection};
 use r2d2_postgres::{PostgresConnectionManager, TlsMode};
-use utils::NabuResult;
 
 lazy_static! {
     static ref DB_POOL: Pool<PostgresConnectionManager> = init().unwrap();

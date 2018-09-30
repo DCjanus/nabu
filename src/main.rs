@@ -1,30 +1,11 @@
-extern crate actix_web;
-extern crate atom_syndication;
-extern crate chrono;
-extern crate failure;
-#[macro_use]
-extern crate failure_derive;
-extern crate flexi_logger;
-#[macro_use]
-extern crate lazy_static;
-#[macro_use]
-extern crate log;
-extern crate postgres;
-extern crate r2d2;
-extern crate r2d2_postgres;
-extern crate reqwest;
-extern crate serde;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
-extern crate serde_qs;
-
 use actix_web::server;
 use chrono::Local;
-use config::{local_address, serve_mode};
+use crate::{
+    config::{local_address, serve_mode},
+    routes::atom_hub,
+};
 use flexi_logger::Logger;
-use log::Record;
-use routes::atom_hub;
+use log::{error, info, Record};
 use std::io;
 
 pub mod atom_hub;
@@ -44,7 +25,7 @@ fn main() {
         .start()
         .unwrap_or_else(|e| panic!("Logger initialization failed with {}", e));
 
-    if let Err(init_database_error) = ::database::init() {
+    if let Err(init_database_error) = crate::database::init() {
         error!("{:?}", init_database_error)
     } else {
         info!("init database success")
