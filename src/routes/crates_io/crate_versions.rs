@@ -79,7 +79,8 @@ impl VersionInfo {
             .map(|x| Person {
                 name: x,
                 ..Default::default()
-            }).collect();
+            })
+            .collect();
         Ok(result)
     }
 

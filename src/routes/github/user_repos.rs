@@ -98,6 +98,7 @@ impl UserRepoGenerator {
                 }],
                 summary: x.description.clone(),
                 ..Default::default()
-            }).collect()
+            })
+            .collect()
     }
 }

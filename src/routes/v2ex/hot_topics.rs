@@ -90,6 +90,7 @@ impl HotTopicsGenerator {
                 }],
                 published: Some(x.created),
                 ..Default::default()
-            }).collect()
+            })
+            .collect()
     }
 }
