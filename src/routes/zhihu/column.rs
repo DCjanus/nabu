@@ -1,6 +1,7 @@
-use atom_syndication::{Category, Content, Entry, Feed, FixedDateTime, Link, Person};
-use crate::{errors::WrongResponse, feed_generator::FeedGenerator, utils::NabuResult};
+use atom_syndication::{Content, Entry, Feed, FixedDateTime, Link, Person};
 use serde::{Deserialize, Serialize};
+
+use crate::{errors::WrongResponse, feed_generator::FeedGenerator, utils::NabuResult};
 
 /// 知乎专栏
 pub struct ColumnGenerator;
@@ -64,11 +65,6 @@ impl ColumnGenerator {
                 id: x.url.clone(),
                 updated: x.updated,
                 authors: vec![x.author.into_feed_person()],
-                categories: x
-                    .topics
-                    .into_iter()
-                    .map(|x| x.into_feed_category())
-                    .collect(),
                 links: vec![Link {
                     href: x.url.clone(),
                     title: Some(x.title.clone()),
@@ -111,7 +107,6 @@ pub struct Article {
     pub excerpt: String,
     pub title: String,
     pub url: String,
-    pub topics: Vec<ZhihuArticleTopic>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Hash, Clone)]
@@ -132,16 +127,6 @@ pub struct ZhihuArticleTopic {
     pub url: String,
     pub name: String,
     pub id: String,
-}
-
-impl ZhihuArticleTopic {
-    pub fn into_feed_category(self) -> Category {
-        Category {
-            term: self.id,
-            scheme: Some(self.url),
-            label: Some(self.name),
-        }
-    }
 }
 
 impl User {
