@@ -1,5 +1,5 @@
-use atom_syndication::Feed;
 use crate::{errors::QSParseError, utils::NabuResult};
+use atom_syndication::Feed;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 use std::hash::Hash;

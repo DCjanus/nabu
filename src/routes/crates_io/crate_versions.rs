@@ -1,8 +1,8 @@
-use atom_syndication::{Entry, Feed, FixedDateTime, Link, Person};
 use crate::{
     feed_generator::FeedGenerator,
     utils::{now, NabuResult},
 };
+use atom_syndication::{Entry, Feed, FixedDateTime, Link, Person};
 use serde::{Deserialize, Serialize};
 
 pub struct CrateVersionsGenerator;

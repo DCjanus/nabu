@@ -1,5 +1,5 @@
-use actix_web::App;
 use crate::source::{Source, SourceBuilder};
+use actix_web::App;
 use log::error;
 use std::collections::BTreeMap;
 

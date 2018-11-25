@@ -1,9 +1,9 @@
-use atom_syndication::{Entry, Feed, Link, Person};
 use crate::{
     feed_generator::FeedGenerator,
     routes::github::GITHUB_API_PREFIX,
     utils::{now, NabuResult},
 };
+use atom_syndication::{Entry, Feed, Link, Person};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Hash)]

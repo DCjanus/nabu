@@ -1,5 +1,5 @@
-use actix_web::{middleware::Logger, App};
 use crate::{feed_generator::FeedGenerator, feed_worker::FeedWorker};
+use actix_web::{middleware::Logger, App};
 use log::error;
 use std::collections::BTreeMap;
 

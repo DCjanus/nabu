@@ -1,5 +1,3 @@
-use actix_web::{HttpRequest, HttpResponse};
-use atom_syndication::{Feed, FixedDateTime, Generator};
 use crate::{
     config::{cache_duration, serve_mode, ServeMode},
     database::get_connection,
@@ -9,6 +7,8 @@ use crate::{
     source::Source,
     utils::{now, NabuResult},
 };
+use actix_web::{HttpRequest, HttpResponse};
+use atom_syndication::{Feed, FixedDateTime, Generator};
 use log::error;
 use serde_json::Value;
 

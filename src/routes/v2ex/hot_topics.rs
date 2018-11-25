@@ -1,8 +1,8 @@
-use atom_syndication::{Category, Content, Entry, Feed, FixedDateTime, Link, Person};
 use crate::{
     feed_generator::FeedGenerator,
     utils::{now, NabuResult},
 };
+use atom_syndication::{Category, Content, Entry, Feed, FixedDateTime, Link, Person};
 use reqwest;
 use serde::Deserialize;
 use serde_json;
