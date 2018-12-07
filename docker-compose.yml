@@ -15,7 +15,7 @@ services:
     - "db:/var/lib/postgresql/data"
 
   caddy:
-    image: abiosoft/caddy:no-stats
+    image: "abiosoft/caddy:no-stats"
     ports:
       - "80:80"
       - "443:443"
