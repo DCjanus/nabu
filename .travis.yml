@@ -19,9 +19,9 @@ matrix:
   - name: clippy-lint
     rust: stable
     before_script:
-    - rustup component add clippy-preview
+    - rustup component add clippy
     script:
-    - cargo clippy -- -D warnings
+    - cargo clippy --all-targets --all-features -- -D warnings
   - name: style-check
     rust: nightly
     before_script:
