@@ -1,4 +1,3 @@
-# When 2018 edition is ready, replace nightly with stable
 FROM clux/muslrust:stable as builder
 
 WORKDIR /nabu
